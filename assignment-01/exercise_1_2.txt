@@ -1,4 +1,5 @@
 // Ciske Harsema - s1010048
+// Steven Wallis de Vries - s1011387
 
 -- 1
 insertionSort :: [Integer] → [Integer]
@@ -55,3 +56,17 @@ twice twice (twice twice) ("|"++) ""
 -- 2^8=256 times | = "||..."
 twice (twice (twice twice)) ("|"++) ""
 -- 2^8=256 times | = "||..."
+
+length (twice ("|" ++) "") == 2
+length (twice twice ("|" ++) "") == 2^2
+length (twice twice twice ("|" ++) "") == 2^2^2
+length (twice twice twice twice ("|" ++) "") == 2^2^2^2
+length (twice (twice twice) ("|" ++) "") == 2^4
+length (twice twice (twice twice) ("|" ++) "") == (2^2)^2^2
+length (twice (twice (twice twice)) ("|" ++) "") == ((2^2)^2)^2
+
+Start with the innermost twice expression.
+Insert a 2 for each 'twice' and separate them by '^' (right-associative).
+Then each time go to the parent expression and
+do the same thing as above to get the exponent for the expression you have up to now.
+Repeat for other parents.

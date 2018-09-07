@@ -1,4 +1,5 @@
 // Ciske Harsema - s1010048
+// Steven Wallis de Vries - s1011387
 
 -- 1
 twice = \f -> \x -> f(f x)
@@ -25,4 +26,3 @@ twice twice (*2) 1
 -- 2
 twice :: (t -> t) -> t -> t
 it takes a function from type t to t, and a parameter t, and returns type t
-

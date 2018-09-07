@@ -1,4 +1,5 @@
 // Ciske Harsema - s1010048
+// Steven Wallis de Vries - s1011387
 
 -- 1
 Prefix notation is easy to parse, because once you read the operator you know how many operands/expressions you need to parse next.
@@ -19,9 +20,12 @@ The $ operator can be useful to avoid parentheses, eg 'f $ "Hello, " ++ name' in
 (1 x (1 x 0)) = 1 x 2 = 4
 
 When you declare the operator as right associative it does not produce the expected value of 6 for the binary sequence '110'. Left associative evaluation does produce the expected value of 6, hence the choice for infixl.
+(Because each application of ⊗ we have to shift the left bits one
+place to the left (2*a). If we define infixr we do not shift all the
+left bits to the left, eg. 1⊗0⊗1⊗0 would be 5 instead of 11.)
 
 -- 4
 f x >= 0 && a || g x y ∗ 7 + 10 == b − 5
 
 After explicitly adding all parentheses:
-(((f x) >= 0) && a) || ((((g x y) ∗ 7) + 10) == (b − 5))
+(((f x) >= 0) && a) || (((((g x) y) ∗ 7) + 10) == (b − 5))
