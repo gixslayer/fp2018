@@ -1,0 +1,27 @@
+// Ciske Harsema - s1010048
+
+-- 1
+Prefix notation is easy to parse, because once you read the operator you know how many operands/expressions you need to parse next.
+Prefix notation is tricky when you'd like to use operators that can have different meanings depending on the amount of operands (such as unary - vs binary -).
+Postfix notation is easy to evaluate using a stack, for example 1 2 3 + 4 + pushes numbers, and once a + is encountered it pops the top 2 elements on the stack, computes the result and pushes that onto the stack.
+Postfix feels really unintuitive to mentally parse, unlike infix notation, but perhaps that is simply because we're taught infix notation as children.
+
+-- 2
+Because we (Westerners) read from left to right, 5 - 4 - 2 reads as take 5, subtract 4 and then subtract 2, thus left associates.
+Evaluating it as right associative yields 5 - (4 - 2) = 3, which forces you to read from right to left and goes against the normal left associative definition in math.
+
+While ("F" ++ "P") ++ "1" and "F" ++ ("P" ++ "1") both yield "FP1", I suppose it is right associative because of efficiency/performance reasons.
+
+The $ operator can be useful to avoid parentheses, eg 'f $ "Hello, " ++ name' instead of 'f ("Hello, " ++ name)'
+
+-- 3
+((1 x 1) x 0) = 3 x 0 = 6
+(1 x (1 x 0)) = 1 x 2 = 4
+
+When you declare the operator as right associative it does not produce the expected value of 6 for the binary sequence '110'. Left associative evaluation does produce the expected value of 6, hence the choice for infixl.
+
+-- 4
+f x >= 0 && a || g x y ∗ 7 + 10 == b − 5
+
+After explicitly adding all parentheses:
+(((f x) >= 0) && a) || ((((g x y) ∗ 7) + 10) == (b − 5))

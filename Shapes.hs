@@ -1,6 +1,8 @@
 module Shapes
 where
 
+-- Ciske Harsema - s1010048
+
 data Shape
   =  Circle Double            -- radius
   |  Square Double            -- length

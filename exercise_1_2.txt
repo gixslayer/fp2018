@@ -1,0 +1,57 @@
+// Ciske Harsema - s1010048
+
+-- 1
+insertionSort :: [Integer] → [Integer]
+insertionSort [ ] = [ ]
+insertionSort (x : xs) = insert x (insertionSort xs)
+
+insert :: Integer → [Integer] → [Integer]
+insert a [ ] = a : [ ]
+insert a (b : xs)
+    | a <= b = a : b : xs
+    | a > b  = b : insert a xs
+
+insertionSort (7 : (9 : (2 : [ ])))
+insert 7 (insertionSort (9 : (2 : [ ])))
+insert 7 (insert 9 (insertionSort (2 : [ ])))
+insert 7 (insert 9 (insert 2 (insertionSort [ ])))
+insert 7 (insert 9 (insert 2 [ ]))
+insert 7 (insert 9 (2 : [ ]))
+insert 7 (2 : insert 9 [ ])
+insert 7 (2 : (9 : [ ]))
+2 : insert 7 (9 : [ ])
+2 : (7 : (9 : [ ]))
+2 : (7 : [9])
+2 : [7, 9]
+[2, 7, 9]
+
+-- 2
+twice f x = f(f x)
+
+twice (+1) 0
+(+1) ((+1) 0)
+(+1) 1
+2
+
+twice twice (*2) 1
+twice (*2) (twice (*2) 1)
+(*2) ((*2) (twice (*2) 1))
+(*2) ((*2) ((*2) ((*2) 1)))
+(*2) ((*2) ((*2) 2))
+(*2) 8
+16
+
+twice ("|"++) ""
+-- 2^1=2 times | =  "||"
+twice twice ("|"++) ""
+-- 2^2=4 times | = "||||"
+twice twice twice ("|"++) ""
+-- 2^4=16 times | = "||||||||||||||||"
+twice twice twice twice ("|"++) ""
+-- 2^16=65536 times | = "||..."
+twice (twice twice) ("|"++) ""
+-- 2^4=16 times | = "||||||||||||||||"
+twice twice (twice twice) ("|"++) ""
+-- 2^8=256 times | = "||..."
+twice (twice (twice twice)) ("|"++) ""
+-- 2^8=256 times | = "||..."

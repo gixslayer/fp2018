@@ -1,6 +1,8 @@
 module Database
 where
 
+-- Ciske Harsema - s1010048
+
 type Person  =  (Name, Age, FavouriteCourse)
 
 type Name             =  String
@@ -39,7 +41,7 @@ ex_6a :: [Person] -> [Person]
 ex_6a = map (increaseAge . increaseAge)
 
 ex_6b :: [Person] -> [Person]
-ex_6b = map (\(n, a, c) -> (n ++ " dr", a, c))
+ex_6b = map (\(n, a, c) -> ("dr " ++ n, a, c))
 
 ex_6c :: [Person] -> [Person]
 ex_6c = filter (\p -> name p == "Frits")
@@ -58,15 +60,11 @@ ex_6g = ex_6e . filter (\p -> favouriteCourse p == "Imperative Programming")
 
 -- 1.5
 thisOldMan :: String
-thisOldMan = genThisOldMan 0
+thisOldMan = concat $ map genParagraph [0..9]
+--thisOldMan = foldr (++) "" $ map genParagraph [0..9]
 
-numbers :: [String]
-numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
-
-plays :: [String]
-plays = ["on my thumb", "on my shoe", "on my knee", "on my door", "on my hive", "on my sticks", "up in heaven", "on my gate", "on my spine", "once again"]
-
-genThisOldMan :: Int -> String
-genThisOldMan n
-    | n < length numbers = "This old man, he played " ++ numbers !! n ++ ",\nHe played knick-knack " ++ plays !! n ++ ";\nWith a knick-knack paddywhack,\nGive the dog a bone,\nThis old man came rolling home.\n\n" ++ genThisOldMan (n+1)
-    | otherwise = ""
+genParagraph :: Int -> String
+genParagraph n = line1 ++ line2 ++ "With a knick-knack paddywhack,\nGive the dog a bone,\nThis old man came rolling home.\n\n"
+    where
+        line1 = "This old man, he played " ++ ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"] !! n ++ ",\n"
+        line2 = "He played knick-knack " ++ ["on my thumb", "on my shoe", "on my knee", "on my door", "on my hive", "on my sticks", "up in heaven", "on my gate", "on my spine", "once again"] !! n ++ ";\n"
