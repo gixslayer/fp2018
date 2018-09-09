@@ -1,0 +1,29 @@
+-- 2.5.1
+(+4)                    (Num -> Num)
+div                     (Integral -> Integral -> Integral)
+div 7                   (Integral -> Integral)
+(div 7) 4               (Integral)
+div (7 4)               (not well-typed)
+7 ‘div‘ 4               (Integral)
++ 3 7                   (not well-formed, '+' yields syntax error)
+(+) 3 7                 (Num)
+(b, ’b’, "b")           (Bool, Char, [Char])
+(abs, ’abs’, "abs")     (not well-formed, 'abs' yields syntax error)
+abs . negate            (Num -> Num)
+(∗3) . (+3)             (Num -> Num)
+
+-- 2.5.2
+(abs .) . (. negate) :: (Num b, Num c) => (b -> c) -> b -> c
+-- It takes a function from 'b -> c' and a Num b. b is first ran through (b -> c)
+-- which produces c, which is then ran through negate and then through abs.
+-- eg take f :: (b -> c), then ((abs .) . (. negate)) f n = abs(negate(f(n))).
+
+(div .) . (. mod) :: (Integral a, Integral a1) => ((a -> a) -> a1) -> a -> a1 -> a1
+-- No idea what this does
+
+-- 2.5.3
+i x = x                     (i :: t -> t)
+k (x, y) = x                (k :: (t1, t2) -> t1)
+b (x, y, z) = (x z) y       (b :: (t1 -> t2 -> t3, t2, t1) -> t3)
+c (x, y, z) = x (y z)       (c :: (t2 -> t3, t1 -> t2, t1) -> t3)
+s (x, y, z) = (x z) (y z)   (s :: (t1 -> t2 -> t3, t1 -> t2, t1) -> t3)

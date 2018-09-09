@@ -1,0 +1,4 @@
+Int has limited precision due to being a fixed size data type.
+Integer has variable sized precision, so it does not suffer from the precision
+problems Int is encountering (causing overflow errors, thus eventually
+producing 0 as the result instead of some very large number as with Integer).
