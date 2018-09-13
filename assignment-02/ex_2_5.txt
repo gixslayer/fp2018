@@ -14,12 +14,12 @@ abs . negate            (Num -> Num)
 
 -- 2.5.2
 (abs .) . (. negate) :: (Num b, Num c) => (b -> c) -> b -> c
--- It takes a function from 'b -> c' and a Num b. b is first ran through (b -> c)
--- which produces c, which is then ran through negate and then through abs.
--- eg take f :: (b -> c), then ((abs .) . (. negate)) f n = abs(negate(f(n))).
+-- Performs abs(f(negate(n))) where f is the (b -> c) parameter and n is the b parameter.
 
 (div .) . (. mod) :: (Integral a, Integral a1) => ((a -> a) -> a1) -> a -> a1 -> a1
--- No idea what this does
+-- (div.) succ 8 3 = div (succ 8) 3 = 9 / 3 = 3
+-- (.mod) f 15 = 15 `mod` 2 = 1, where f g = g 2
+-- ((div.).(.mod)) f 9 2 = 0, where f g = g 2
 
 -- 2.5.3
 i x = x                     (i :: t -> t)

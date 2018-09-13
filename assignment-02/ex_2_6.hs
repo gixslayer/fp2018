@@ -19,7 +19,7 @@ ex_1e (a, b) = a
 -- How many functions of type 'Int -> Int'?
 -- Since Int is a 64bit integer (on my implementation), 2^64 * 2^64 = 2^128?
 -- How many functions of type 'a -> a'?
--- n^2 where n is the total number of values a can take?
+-- Only one, namely the 'id' function.
 
 -- 2.6.2
 ex_2a :: (a, a) -> (a, a)
@@ -59,4 +59,4 @@ ex_3d = fix
 -- How many functions of type '(Int -> Int) -> Int'?
 -- 2^128 * 2^64 = 2^192?
 -- How many functions of type '(a -> a) -> a'?
--- n^3 where n is the total number of values a can take?
+-- Only one, namely the 'fix' function.
