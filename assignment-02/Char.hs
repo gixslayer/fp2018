@@ -4,6 +4,9 @@ import Data.Char
 import Data.List
 import Data.Maybe
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 equal      :: String -> String -> Bool
 equal a b = map toLower a == map toLower b
 

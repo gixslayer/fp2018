@@ -1,3 +1,6 @@
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 -- 2.4.1
 --swap :: (a, b) -> (b, a)
 swap :: (Int, Int) -> (Int, Int)

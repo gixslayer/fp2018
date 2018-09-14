@@ -1,4 +1,6 @@
--- 2.1.1
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387-- 2.1.1
+
 -- There are 4 functions in total, namely
 -- False -> False
 -- False -> True

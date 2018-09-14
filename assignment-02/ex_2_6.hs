@@ -1,5 +1,8 @@
 import Control.Monad.Fix
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 -- 2.6.1
 ex_1a :: Int -> Int
 ex_1a = succ
