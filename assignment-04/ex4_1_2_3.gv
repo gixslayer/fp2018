@@ -1,0 +1,17 @@
+digraph {
+    // Node (Node Empty ’a’ Empty) ’k’ (Node Empty ’z’ Empty)
+    A [shape=circle, label="k"]
+    B [shape=circle, label="a"]
+    C [shape=circle, label="z"]
+    BE1 [shape=none, label="&epsilon;"]
+    BE2 [shape=none, label="&epsilon;"]
+    CE1 [shape=none, label="&epsilon;"]
+    CE2 [shape=none, label="&epsilon;"]
+
+    A -> B
+    A -> C
+    B -> BE1
+    B -> BE2
+    C -> CE1
+    C -> CE2
+}

@@ -1,0 +1,17 @@
+digraph {
+    // Node (Node (Node Empty "Frits" Empty) "Peter" Empty) "Ralf" Empty
+    A [shape=circle, label="Ralf"]
+    B [shape=circle, label="Peter"]
+    C [shape=circle, label="Frits"]
+    AE2 [shape=none, label="&epsilon;"]
+    BE2 [shape=none, label="&epsilon;"]
+    CE1 [shape=none, label="&epsilon;"]
+    CE2 [shape=none, label="&epsilon;"]
+
+    A -> B
+    A -> AE2
+    B -> C
+    B -> BE2
+    C -> CE1
+    C -> CE2
+}

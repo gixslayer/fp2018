@@ -1,0 +1,18 @@
+digraph {
+    //Node Empty 4711 (Node Empty 0815 (Node Empty 42 Empty))
+    A [shape=circle, label="4711"]
+    B [shape=circle, label="0815"]
+    C [shape=circle, label="42"]
+    AE1 [shape=none, label="&epsilon;"]
+    BE1 [shape=none, label="&epsilon;"]
+    CE1 [shape=none, label="&epsilon;"]
+    CE2 [shape=none, label="&epsilon;"]
+    D [shape=none, label="Left and right \nbranches should \nbe reversed \n(automatic layout)"]
+
+    A -> AE1
+    A -> B
+    B -> BE1
+    B -> C
+    C -> CE1
+    C -> CE2
+}
