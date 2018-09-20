@@ -65,13 +65,37 @@ postorder (Node l e r) = postorder l ++ postorder r ++ [e]
 -- 4.2.2
 layoutBranch :: (Show elem) => Tree elem -> Int -> Bool -> [String]
 layoutBranch Empty _ _ = []
-layoutBranch (Node l e r) i d = (layoutBranch l (i+1) True) ++ ((br ++ show e) : (layoutBranch r (i+1) False))
+layoutBranch (Node l e r) i d = layoutBranch l (i+1) True ++ (indent ++ br ++ show e) : layoutBranch r (i+1) False
     where br = if d then "/ " else "\\ "
+          indent = replicate (i*4) ' '
 
 layout :: (Show elem) => Tree elem -> String
 layout Empty = "- "
-layout (Node l e r) = concat $ layoutBranch l 1 True ++ "- " ++ show e ++ layoutBranch r 1 False
+layout (Node l e r) = unlines $ layoutBranch l 1 True ++ ("- " ++ show e) : layoutBranch r 1 False
 
---build :: [elem] -> Tree elem
---balanced :: [elem] -> Tree elem
---create :: Int -> Tree ()
+-- 4.3.1
+build :: [elem] -> Tree elem
+build [] = Empty
+build (x:xs) = Node Empty x (build xs)
+
+-- 4.3.2
+balanced :: [elem] -> Tree elem
+balanced [] = Empty
+balanced (x:xs) = Node (balanced ls) x (balanced rs)
+    where l = length xs
+          (ls, rs) = splitAt (l `quot` 2) xs
+
+-- 4.3.3
+-- Since tree of size n can be transformed into a tree of size 2n+1 in one step
+-- it's possible to roughly double the size with each step. Hence it's possible
+-- to produce a tree of size ~2^n in n steps, which means it's possible to
+-- produce a tree of size n in log(n) steps.
+-- works for (2^n)-1, pass some current size/target size params to deal with remainder?
+doubleBranch :: Int -> Tree () -> Tree ()
+doubleBranch n t 
+  | n > 1  = Node (doubleBranch ((n-1) `quot` 2) t) () (doubleBranch ((n-1) `quot` 2) t)  
+  | n == 1 = t
+  | n == 0 = Empty
+
+create :: Int -> Tree ()
+create n = doubleBranch n (Node Empty () Empty)
