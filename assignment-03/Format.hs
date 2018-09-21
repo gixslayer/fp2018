@@ -3,7 +3,10 @@ where
 import Prelude hiding (Word)
 import WordList (Word, lorem)
 
--- Take words as long as the line quota 'n' is not depleted. The function 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
+-- Take words as long as the line quota 'n' is not depleted. The function
 -- returns a pair of word lists, where the first word list is the formatted
 -- line, and the second word list is the remaining words that didn't fit.
 formatLine :: Int -> [Word] -> ([Word], [Word])

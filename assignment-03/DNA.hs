@@ -3,6 +3,9 @@ where
 import Prelude
 import Data.List
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 -- Imported from List.lhs and renamed so that I can actually use filter from Data.List
 filter2 :: (a -> Maybe b) -> ([a] -> [b])
 filter2 _f []  =  []
@@ -75,7 +78,7 @@ contains ss ds = any (beginsWith ss) (tails ds)
 
 -- Group contigious bases, and then throw out all non A bases. Then map the
 -- list of contigious A bases to a list of lengths. Then find the longest
--- length and convert it from an Int to an Integer. 
+-- length and convert it from an Int to an Integer.
 longestOnlyAs :: DNA -> Integer
 longestOnlyAs [] = 0
 longestOnlyAs xs = toInteger $ maximum $ map length $ filter (\xs -> head xs == A) $ group xs

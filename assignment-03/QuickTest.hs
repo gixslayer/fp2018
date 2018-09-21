@@ -2,6 +2,9 @@ module QuickTest (Probes, Property, (-->), (==>))
 where
 import Data.List (sort)
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 type Probes a    =  [a]
 
 type Property a  =  a -> Bool
@@ -21,6 +24,7 @@ ordered (x:[]) = True
 ordered (x:y:xs) = x <= y && ordered (y:xs)
 
 -- 3.5.2
+-- There are n! permutations of a list of n elements.
 removeAt :: Int -> [a] -> [a]
 removeAt i xs | i < length xs = take i xs ++ drop (i+1) xs
 
