@@ -1,4 +1,4 @@
-module QuickTest (Probes, Property, (-->), (==>))
+module QuickTest (Probes, Property, permutations, (-->), (==>))
 where
 import Data.List (sort)
 
