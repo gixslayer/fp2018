@@ -2,6 +2,9 @@ module QuickTest (Probes, Property, permutations, (-->), (==>))
 where
 import Data.List (sort)
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 type Probes a    =  [a]
 
 type Property a  =  a -> Bool

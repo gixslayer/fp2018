@@ -1,6 +1,9 @@
 module Calculus
 where
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 -- 4.6.1
 data Primitive
   =  Sin  -- trigonometric: sine

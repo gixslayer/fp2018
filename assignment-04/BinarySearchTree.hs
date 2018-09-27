@@ -3,6 +3,9 @@ where
 import BinaryTree   hiding (member)
 import QuickTest
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 registry  ::  Tree String
 registry  =  Node (Node (Node Empty "Frits" Empty) "Peter" Empty) "Ralf" Empty
 
@@ -15,7 +18,6 @@ member x (Node l e r)
     | e > x  = member x l
 
 -- 4.4.2
--- TODO: Test properly, only tested for insert "Nienke" registry
 insert :: (Ord elem) => elem -> Tree elem -> Tree elem
 insert x Empty = Node Empty x Empty
 insert x (Node l e r)
@@ -49,15 +51,13 @@ isSearchTree :: (Ord elem) => Tree elem -> Bool
 isSearchTree Empty = True
 isSearchTree (Node l e r) = isLeftBranch e l && isRightBranch e r
 
-allTrees :: [elem] -> [Tree elem]
-allTrees [] = []
-allTrees [x] = [Node Empty x Empty]
-allTrees (x:xs) = concat [[Node t x Empty, Node Empty x t] | t <- allTrees xs]
+insertAll :: (Ord elem) => [elem] -> Tree elem -> Tree elem
+insertAll xs t = foldr insert t xs
 
 trees :: (Ord elem) => [elem] -> Probes (Tree elem)  -- should be defined in BinaryTree
-trees xs = [t | ys <- permutations xs, t <- allTrees ys, inorder t == xs]
+trees xs = filter (\t -> inorder t == xs) [insertAll ys Empty | ys <- permutations xs]
 
--- generates the sequence 0 followed by 2^n
+-- [length (trees [1 . . i]) | i ← [0 . .]] generates the sequence n!
 -- the following expressions were used to test and all produce true
 --(trees [1,2,3,4,5] --> isSearchTree) (delete 0)
 --(trees [1,2,3,4,5] --> isSearchTree) (delete 1)

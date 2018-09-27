@@ -1,6 +1,9 @@
 module BinaryTree
 where
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 data Tree elem = Empty | Node (Tree elem) elem (Tree elem)
   deriving (Show)
 
@@ -49,15 +52,30 @@ member e Empty = False
 member e (Node l a r) = e == a || member e l || member e r
 
 -- 4.2.1
--- TODO: Compute running time (probably depends on ++ and : running time).
+-- Complexity O(?) as this essentially expands to something like the following:
+-- e : [x:xs] ++ [y:ys]
+-- Since the list concatination of n elements takes O(n), rather than O(1), the
+-- running time of the algorithm is O(n^2), as this concatination is executed on
+-- each recursive call.
 preorder :: Tree elem -> [elem]
 preorder Empty = []
 preorder (Node l e r) = e : preorder l ++ preorder r
 
+-- Complexity O(n^2) as this essentially expands to something like the following:
+-- [x:xs] ++ [e] ++ [y:ys]
+-- Concatinating the element e is not a problem, but concatinating the list [x:xs]
+-- of n elements will take O(n), rather than O(1). Therefore the running time of
+-- the algorithm will be O(n^2), as this concatination is executed on each recursive
+-- call.
 inorder :: Tree elem -> [elem]
 inorder Empty = []
 inorder (Node l e r) = inorder l ++ [e] ++ inorder r
 
+-- Complexity O(n) as this essentially expands to something like the following:
+-- [] ++ [x] ++ [y] ++ [] ++ [z] ++ [e]
+-- Since only 1 element is appended with each list concat, this happens in
+-- constant time. As all n elements appear (plus some empty leafs), the running
+-- time is O(n).
 postorder :: Tree elem -> [elem]
 postorder Empty = []
 postorder (Node l e r) = postorder l ++ postorder r ++ [e]
@@ -90,7 +108,8 @@ balanced (x:xs) = Node (balanced ls) x (balanced rs)
 -- it's possible to roughly double the size with each step. Hence it's possible
 -- to produce a tree of size ~2^n in n steps, which means it's possible to
 -- produce a tree of size n in log(n) steps.
--- works for (2^n)-1, pass some current size/target size params to deal with remainder?
+-- works for (2^n)-1, would require some modifications to produce exactly n
+-- nodes, but this would not change the running time complexity.
 doubleBranch :: Int -> Tree () -> Tree ()
 doubleBranch n t 
   | n > 1  = Node (doubleBranch ((n-1) `quot` 2) t) () (doubleBranch ((n-1) `quot` 2) t)  

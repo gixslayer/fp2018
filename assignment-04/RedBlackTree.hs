@@ -2,6 +2,9 @@ module RedBlackTree
 where
 import QuickTest
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 data RedBlackTree elem
   =  Leaf
   |  Red    (RedBlackTree elem) elem (RedBlackTree elem)
