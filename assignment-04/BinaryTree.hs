@@ -52,7 +52,7 @@ member e Empty = False
 member e (Node l a r) = e == a || member e l || member e r
 
 -- 4.2.1
--- Complexity O(?) as this essentially expands to something like the following:
+-- Complexity O(n^2) as this essentially expands to something like the following:
 -- e : [x:xs] ++ [y:ys]
 -- Since the list concatination of n elements takes O(n), rather than O(1), the
 -- running time of the algorithm is O(n^2), as this concatination is executed on
@@ -118,3 +118,11 @@ doubleBranch n t
 
 create :: Int -> Tree ()
 create n = doubleBranch n (Node Empty () Empty)
+
+-- Here is an alternative version that works with the same concept, but is much neater.
+createAlt :: Int -> Tree ()
+createAlt 0 = Empty
+createAlt s
+  | odd s = let half = createAlt $ (s - 1) `div` 2
+             in Node half () half
+  | otherwise = Node (createAlt (s - 1)) () Empty
