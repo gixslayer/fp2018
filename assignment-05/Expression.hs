@@ -34,8 +34,7 @@ factor'  =   do ds <- many1 digit ; return (Lit (read ds))
 
 
 -- 5.3.1
--- Actually infinity recurses, but not sure what this assignment actually wants
--- as the alternative using expr/term/factor is already given...
+-- Actually infinity recurses, but I think this is what the assignment wants?
 expr1 :: Parser Expr
 expr1 =  do ds <- many1 digit ; return (Lit (read ds))
       .| do i <- expr1 ; symbol '+' ; j <- expr1 ; return (i :+: j)
@@ -44,3 +43,13 @@ expr1 =  do ds <- many1 digit ; return (Lit (read ds))
 
 --parse expr "4*71+1"
 --parse expr "4 * 71 + 1"
+
+-- 5.3.2
+-- running time and memory usage seem to decrease.
+skip :: Parser ()
+skip = return ()
+
+expr'', term'', factor'' :: Parser Expr
+expr''    =   do i <- term'' ;   alt [ (do skip ; return i), (do symbol '+' ; j <- expr'' ; return (i :+: j)) ]
+term''    =   do i <- factor'' ; alt [ (do skip ; return i), (do symbol '*' ; j <- term'' ; return (i :*: j)) ]
+factor''  =   do ds <- many1 digit ; return (Lit (read ds))
