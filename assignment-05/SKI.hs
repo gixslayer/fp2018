@@ -2,6 +2,9 @@ module SKI
 where
 import Lambda
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 data SKI var
   =  Free var                 -- free/unbound variable
   |  S

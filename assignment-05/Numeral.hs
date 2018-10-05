@@ -1,6 +1,9 @@
 module Numeral
 where
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 type Base   =  Integer
 type Digit  =  Integer
 

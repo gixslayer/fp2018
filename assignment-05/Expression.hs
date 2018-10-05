@@ -3,6 +3,9 @@ where
 import Prelude hiding (fail)
 import Parser
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 infixl 6 :+:
 infixl 7 :*:
 

@@ -3,6 +3,9 @@ where
 import Prelude
 import Parser
 
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 -- 5.4.1
 
 {-
