@@ -11,13 +11,13 @@ import Parser
 {-
 lambda          ::= {term ' '} term
                   | '\' var '->' lambda
+                  | 'λ' var '.' lambda
 term            ::= var
                   | '(' lambda ')'
 var             ::= idStart {idMid}
 idStart         ::= lower | upper | '_'
 idMid           ::= idStart | digit | "'"
 
-Does not support λ/.-syntax
 Does not accept whitespace in other locations than function application,
   in which case whitespace (one space) is required
 -}
@@ -33,6 +33,7 @@ data Lambda var
 lambda, term :: Parser (Lambda String)
 lambda  = (many (term >>= \t -> symbol ' ' >> return t) >>= \ts -> term >>= \t -> return $ foldr (:@) t ts)
        .| (symbol '\\' >> var >>= \v -> symbol '-' >> symbol '>' >> lambda >>= \l -> return $ Fun v l)
+       .| (symbol 'λ' >> var >>= \v -> symbol '.' >> lambda >>= \l -> return $ Fun v l)
 term    = (var >>= \v -> return $ Var v)
        .| (symbol '(' >> lambda >>= \l -> symbol ')' >> return l)
 
