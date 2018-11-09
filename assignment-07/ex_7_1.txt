@@ -1,0 +1,43 @@
+-- 7.1
+Proof of: ordered xs -> ordered (insert x xs)
+    with induction on xs:
+
+  Base case: ordered [] -> ordered (insert x [])
+    ordered []
+    -> ordered [a] {this trivially holds}
+    -> ordered (insert x []) {definition insert}
+
+  Inductive step: (ordered as -> ordered (insert x as))
+                  ==> ordered (a:as) -> ordered (insert x (a:as))
+    ordered (a:as)
+    -> ordered as {obviously a sublist is also ordered}
+    -> ordered (insert x as) {induction hypothesis}
+    
+    Case x<=a:
+      ordered (insert x as)
+      -> ordered (x:a:as) {because `ordered (a:as)`, `a` is less than all of `as`, and we assumed x<=a}
+      = ordered (insert x (a:as)) {definition insert for x<=a}
+    Case x>a:
+      ordered (insert x as)
+      -> ordered (a : insert x as) {because `ordered (a:as)`, `a` is less than all of `as`, and we assumed a<x}
+      = ordered (insert x (a:as)) {definition insert for x>a}
+    
+    Hence this holds for all cases
+
+  Hence this holds for all xs
+
+
+Proof of: ordered (insertionSort xs)
+    with induction on xs:
+
+  Base case: ordered (insertionSort [])
+    ordered (insertionSort [])
+    = ordered [] {definition insertionSort}
+    = True {the empty list is trivially ordered}
+
+  Inductive step: ordered (insertionSort as) ==> ordered (insertionSort (a:as))
+    ordered (insertionSort as)
+    -> ordered (insert a (insertionSort as)) {because `ordered xs -> ordered (insert x xs)`}
+    -> ordered (insertionSort (a:as))
+
+  Hence this holds for all xs

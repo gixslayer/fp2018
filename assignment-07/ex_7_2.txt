@@ -1,0 +1,93 @@
+-- 7.2
+We use the following definition: data Tree elem = Empty | Node (Tree elem) elem (Tree elem)
+
+-- 7.2.1
+func Empty = base value...
+func (Node l e r) = ... func l ... func r ... e ...
+
+-- 7.2.2
+innerNodes :: Tree elem -> Int
+innerNodes Empty = 0
+innerNodes (Node l _ r) = innerNodes l + innerNodes r + 1
+
+outerNodes :: Tree elem -> Int
+outerNodes Empty = 1
+outerNodes (Node l _ r) = outerNodes l + outerNodes r
+
+Proof of: outerNodes t = innerNodes t + 1
+    with induction on t:
+
+  Base case: outerNodes Empty = innerNodes Empty + 1
+    outerNodes Empty
+    = 1 {definition outerNodes}
+    = 0 + 1 {neutral element}
+    = innerNodes Empty + 1 {definition innerNodes}
+
+  Inductive step: outerNodes l = innerNodes l + 1
+                  & outerNodes r = innerNodes r + 1
+                  ==> outerNodes (Node l e r) = innerNodes (Node l e r) + 1
+    outerNodes (Node l e r)
+    = outerNodes l + outerNodes r {definition outerNodes}
+    = innerNodes l + 1 + innerNodes r + 1 {inductive hypothesis}
+    = (innerNodes l + innerNodes r + 1) + 1 {rearranging}
+    = innerNodes (Node l e r) + 1 {definition innerNodes}
+
+  Hence this holds for all t
+
+-- 7.2.3
+We have:
+size :: Tree elem -> Int
+size Empty = 0
+size (Node l _ r) = 1 + size l + size r
+
+minHeight :: Tree elem -> Int
+minHeight Empty = 0
+minHeight (Node l _ r) = 1 + min (minHeight l) (minHeight r)
+
+maxHeight :: Tree elem -> Int
+maxHeight Empty = 0
+maxHeight (Node l _ r) = 1 + max (maxHeight l) (maxHeight r)
+
+Proof of: 2^minHeight t - 1 <= size t <= 2^maxHeight t - 1
+    with induction on t
+
+  Base case: 2^minHeight Empty - 1 <= size Empty <= 2^maxHeight Empty - 1
+    2^minHeight Empty - 1 <= size Empty <= 2^maxHeight Empty - 1
+    = 2^minHeight Empty - 1 <= 0 <= 2^maxHeight Empty - 1 {def size}
+    = 2^0 - 1 <= 0 <= 2^0 - 1 {def minHeight}
+    = 0 <= 0 <= 0
+    = True
+
+  Inductive step: 2^minHeight l - 1 <= size l <= 2^maxHeight l - 1
+                  & 2^minHeight r - 1 <= size r <= 2^maxHeight r - 1
+                  ==> 2^minHeight (Node l e r) - 1 <= size (Node l e r) <= 2^maxHeight (Node l e r) - 1
+  
+    2^minHeight (Node l e r) - 1 <= size (Node l e r) <= 2^maxHeight (Node l e r) - 1
+    = 2^minHeight (Node l e r) - 1 <= 1 + size l + size r <= 2^maxHeight (Node l e r) - 1 {def size}
+    = 2^(1 + min (minHeight l) (minHeight r)) - 1 <= 1 + size l + size r <= 2^maxHeight (Node l e r) - 1 {def minHeight}
+    = 1 + size l + size r <= 2^maxHeight (Node l e r) - 1
+    { because 2^(1 + min (minHeight l) (minHeight r)) - 1 <= 1 + size l + size r:
+        Case 1: minHeight l <= minHeight r
+          2^(1 + min (minHeight l) (minHeight r)) - 1
+          = 2^(1 + minHeight l) - 1 {minHeight l <= minHeight r}
+          = 2*2^minHeight l - 1
+          = 2*((2^minHeight l - 1) + 1) - 1
+          = (2^minHeight l - 1) + 1 + (2^minHeight l - 1) + 1 - 1
+          = (2^minHeight l - 1) + (2^minHeight l - 1) + 1
+          <= size l + (2^minHeight l - 1) + 1 {inductive hypothesis}
+          <= size l + size r + 1
+          { because:
+              2^minHeight l - 1
+              <= 2^minHeight r - 1 {minHeight l <= minHeight r}
+              <= size r {inductive hypothesis}
+          }
+        
+        Case 2: minHeight l >= minHeight r
+          The same but with l & r switched
+        
+        So in each case this holds
+    }
+    = 1 + size l + size r <= 2^(1 + max (maxHeight l) (maxHeight r)) - 1 {def maxHeight}
+    = True {Analogous to the proof for minHeight but with 'minHeight' replaced by 'maxHeight' and with <= and >= switched}
+
+  Hence this holds for all t

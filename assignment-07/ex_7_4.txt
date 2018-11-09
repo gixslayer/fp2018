@@ -1,0 +1,40 @@
+-- 7.4.1
+foldr fusion law:
+
+f(a o1 b) = a o2 f b => f . foldr (o1) e = foldr (o2) (f e)
+
+foldr-map fusion law:
+
+foldr (o3) e . map f = foldr (\a b -> f a o3 b) e
+
+foldr (o3) e . map f = foldr (o3) e . foldr (\x xs -> f x : xs) [] -- definition of map
+                     = foldr (o4) (foldr (o3) e [])                -- foldr fusion law
+                     = foldr (o4) e                                -- definition of foldr
+
+so show that o4 = (\a b -> f a o3 b) yields f'(a o1 b) = a o2 f' b for
+    f' = foldr (o3) e
+    o1 = \x xs -> f x : xs
+    o2 = o4 = \a b -> fa o3 b
+
+rewriting to show equivalence
+f'(a o1 b) = foldr (o3) e (a o1 b)   -- definition of f'
+           = foldr (o3) e (f a : b)  -- definition of o1
+           = f a o3 (foldr (o3) e b) -- definition of foldr
+           = a o2 (foldr (o3) e b)   -- specification of o2
+           = a o2 f' b               -- specification of f'
+
+hence
+foldr (o3) e . map f = foldr (\a b -> f a o3 b) e
+
+-- 7.4.2
+second functor law:
+
+map (f . g) = map f . map g
+
+map f . map g = foldr (\x xs -> f x : xs) [] . map g             -- definition of map
+              = foldr (\a b -> (\x xs -> f x : xs) $ g a $ b) [] -- foldr-map fusion law
+              = foldr (\a b -> f(g a) : b) []                    -- rewrite
+              = foldr (\a b -> (f . g) a : b) []                 -- rewrite
+              = map (f . g)                                      -- specification of map
+
+-- 7.4.3
