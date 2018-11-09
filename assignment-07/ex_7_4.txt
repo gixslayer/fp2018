@@ -1,3 +1,6 @@
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 -- 7.4.1
 foldr fusion law:
 
@@ -38,3 +41,35 @@ map f . map g = foldr (\x xs -> f x : xs) [] . map g             -- definition o
               = map (f . g)                                      -- specification of map
 
 -- 7.4.3
+bookkeeping law:
+
+reduce . concat = reduce . map reduce
+    where reduce = foldr (@) e
+          concat = foldr (++) []
+
+reduce . map reduce = foldr (@) e . map reduce                -- definition of reduce
+                    = foldr (\a b -> reduce a @ b) e          -- foldr-map fusion law
+                    = foldr (\a b -> reduce a @ b) (reduce e) -- specification of reduce
+                    = reduce . foldr (++) e                   -- foldr fusion law
+                    = reduce . concat                         -- specification of concat
+
+show for fusion law that:
+
+(\a b -> reduce a @ b) a (reduce b) = reduce a @ reduce b = reduce (a ++ b)
+
+reduce a @ reduce b = (foldr (@) e a) @ (reduce b) -- definition of reduce
+                    = foldr (@) (reduce b) a       -- rewrite
+                    = (reduce . foldr (:) b) a     -- foldr fusion law
+                    = reduce (foldr (:) b a)       -- rewrite
+                    = reduce (a++b)                -- definition of ++
+
+show for fusion law that:
+
+reduce (a : b) = a @ reduce b
+
+reduce (a : b) = foldr (@) e (a : b) -- definition of reduce
+               = a @ foldr (@) e b   -- specification of foldr
+               = a @ reduce b        -- specification of reduce
+
+hence
+reduce . concat = reduce . map reduce

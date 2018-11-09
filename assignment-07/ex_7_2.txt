@@ -1,3 +1,6 @@
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+
 -- 7.2
 We use the following definition: data Tree elem = Empty | Node (Tree elem) elem (Tree elem)
 

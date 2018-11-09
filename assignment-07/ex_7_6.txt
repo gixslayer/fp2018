@@ -1,0 +1,40 @@
+-- Ciske Harsema - s1010048
+-- Steven Wallis de Vries - s1011387
+-- 7.6
+
+-- 7.6.1
+maximum . map product . segments
+= maximum . map product . concat . map inits . tails {def segments}
+= maximum . concat . map (map product) . map inits . tails {polymorph concat}
+= maximum . map maximum . map (map product) . map inits . tails {bookkeeping law}
+= maximum . map (maximum . map product . inits) . tails {map preserves composition}
+
+We now have to calculate 1↑(1*a)↑(1*a*b)↑(1*a*b*c)↑... where x↑y denotes max(x,y).
+We can do this more efficiently using Horners's rule if ↑ distributes over *, hence if x↑(y*z) = (x↑y)*(x↑z).
+  Take x=3,y=2,z=1: 3↑(2*1)=3↑2=3 =/= 9=3*3=(3↑2)*(3↑1). Hence, this does not hold.
+  Therefore, we cannot use Horners's rule for multiplication.
+
+-- 7.6.2
+class Monoid a where
+  mempty  :: a
+  mappend :: a -> a -> a
+
+newtype MaxSum elem = MaxSum elem
+
+instance (Ord elem, Num elem) => Monoid (MaxSum elem) where
+  mempty = MaxSum 0
+  mappend (MaxSum l) (MaxSum r) = MaxSum $ max 0 (l+r) --DOES NOT WORK!
+
+TODO!
+
+-- 7.6.3
+A working (but inefficient: O(n^2)) solution would be:
+maximumProfit :: [Int] -> Int
+maximumProfit l = maximum [maximum [l!!e - l!!s | e <- [s..length l - 1]] | s <- [0..length l - 1]]
+
+-- 7.6.4
+Just buy it once it starts gaining value (difference>0) and sell it before it starts losing value (diff<0).
+We can obtain the maximum profit by just adding all positive difference values:
+
+totalMaximumProfit :: [Int] -> Int
+totalMaximumProfit = sum . filter (>0)
