@@ -86,7 +86,7 @@ decodechar (l :^: r) (I:bs) = decodechar r bs
 
 -- Some test data.
 testHuffman :: (Ord char) => [char] -> Bool
-testHuffman cs = ((==cs) $ decode ct $ encode ct cs) && ((==cs) $ decode ct $ encode' ct cs)
+testHuffman cs = (cs == decode ct (encode ct cs)) && (cs == decode ct (encode' ct cs))
   where ct = huffman $ frequencies cs
 
 hw, why :: String
