@@ -3,6 +3,8 @@ where
 import Satellite
 import Tree
 import Data.List
+import Data.Maybe
+import qualified Data.Map.Strict as SMap
 
 -- Ciske Harsema - s1010048
 -- Steven Wallis de Vries - s1011387
@@ -13,8 +15,7 @@ import Data.List
 -- Warm-up: constructing a frequency table.
 
 frequencies  ::  (Ord char) => [char] -> [With Int char]
-frequencies xs = map (\x -> count x xs :- x) (nub xs)
-  where count x = length . filter (==x)
+frequencies = map (\g -> length g :- head g) . group . sort
 
 -------------------------------------------------------------------------------
 
@@ -23,11 +24,11 @@ frequencies xs = map (\x -> count x xs :- x) (nub xs)
 
 -- 8.2.1
 huffman :: [With Int char] -> Tree char
-huffman xs = satellite $ makebranches $ map (\(f :- x) -> f :- Leaf x) (sort xs)
+huffman = satellite . collapsebranches . map (\(f :- x) -> f :- Leaf x) . sort
 
-makebranches :: [With Int (Tree char)] -> With Int (Tree char)
-makebranches [x] = x
-makebranches ((fx :- x):(fy :- y):xs) = makebranches $ insert (fx + fy :- x :^: y) xs
+collapsebranches :: [With Int (Tree char)] -> With Int (Tree char)
+collapsebranches [x] = x
+collapsebranches ((fx :- x):(fy :- y):xs) = collapsebranches $ insert (fx + fy :- x :^: y) xs
 
 -- 8.2.2
 engfreq :: [With Int Char]
@@ -46,18 +47,25 @@ data Bit = O | I
 
 -- 8.3.1
 encode :: (Eq char) => Tree char -> [char] -> [Bit]
-encode t = concat . reverse . map (findcode cs)
-  where cs = codes t
+encode t = let cm = codes t in concatMap (lookup cm)
+  where lookup cm c = snd $ fromJust $ find ((==c) . fst) cm
 
 codes :: Tree char -> [(char, [Bit])]
-codes t = makecodes t []
+codes (Leaf c) = [(c, [])]
+codes (l :^: r) = addpath O (codes l) ++ addpath I (codes r)
+  where addpath b = map (\(c, bs) -> (c, b:bs))
 
-makecodes :: Tree char -> [Bit] -> [(char, [Bit])]
-makecodes (Leaf c) bs = [(c, bs)]
-makecodes (l :^: r) bs = makecodes l (bs++[O]) ++ makecodes r (bs++[I])
+-- Efficient with Map; but char has to be Ord:
+encode' :: (Ord char) => Tree char -> [char] -> [Bit]
+encode' t = concatMap (\c -> cm SMap.! c)
+  where cm = codes' t [] SMap.empty
 
-findcode :: (Eq char) => [(char, [Bit])] -> char -> [Bit]
-findcode xs c = snd $ head $ filter (\(c1, bs) -> c1 == c) xs
+codes' :: (Ord char) => Tree char -> [Bit] -> SMap.Map char [Bit] -> SMap.Map char [Bit]
+codes' (Leaf c) p m = SMap.insert c (reverse p) m
+codes' (l :^: r) p m = codes' r (I:p) $ codes' l (O:p) m
+
+quickEncode :: (Ord char) => [char] -> [Bit]
+quickEncode s = encode' (huffman $ frequencies s) s
 
 -------------------------------------------------------------------------------
 
@@ -65,11 +73,8 @@ findcode xs c = snd $ head $ filter (\(c1, bs) -> c1 == c) xs
 -- Decoding a Huffman binary.
 
 decode :: Tree char -> [Bit] -> [char]
-decode t bs = decodechars t bs []
-
-decodechars :: Tree char -> [Bit] -> [char] -> [char]
-decodechars t [] cs = cs
-decodechars t bs cs = decodechars t bs' (c:cs)
+decode t [] = []
+decode t bs = c : decode t bs'
   where (c, bs') = decodechar t bs
 
 decodechar :: Tree char -> [Bit] -> (char, [Bit])
@@ -80,8 +85,9 @@ decodechar (l :^: r) (I:bs) = decodechar r bs
 -------------------------------------------------------------------------------
 
 -- Some test data.
--- Test case that yields true
--- let ct = huffman $ frequencies why in (decode ct $ encode ct why) == why
+testHuffman :: (Ord char) => [char] -> Bool
+testHuffman cs = ((==cs) $ decode ct $ encode ct cs) && ((==cs) $ decode ct $ encode' ct cs)
+  where ct = huffman $ frequencies cs
 
 hw, why :: String
 hw = "hello world"
