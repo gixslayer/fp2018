@@ -1,3 +1,6 @@
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 -- 9.1.1
 
 Applicative:
@@ -22,8 +25,22 @@ Applicative:
   = 1
 
 Normal:
-daarbij evalueer je bij de "b : insert ..." case die insert niet want je wil alleen de head
+  minimum [2, 7, 1, 9, 6, 5]
+  = (head . insertionSort) [2, 7, 1, 9, 6, 5]
+  = head $ insertionSort [2, 7, 1, 9, 6, 5]
+  = head $ insert 2 (insertionSort [7, 1, 9, 6, 5])
+  = head $ insert 2 $ insert 7 $ insert 1 $ insert 9 $ insert 6 $ insert 5 $ insertionSort []
+  = head $ insert 2 $ insert 7 $ insert 1 $ insert 9 $ insert 6 $ insert 5 []
+  = head $ insert 2 $ insert 7 $ insert 1 $ insert 9 $ insert 6 [5]
+  = head $ insert 2 $ insert 7 $ insert 1 $ insert 9 $ 5 : insert 6 []
+  = head $ insert 2 $ insert 7 $ insert 1 $ 5 : insert 9 (insert 6 [])
+  = head $ insert 2 $ insert 7 $ 1 : 5 : insert 9 (insert 6 [])
+  = head $ insert 2 $ 1 : insert 7 (5 : insert 9 (insert 6 []))
+  = head $ 1 : insert 2 (insert 7 (5 : insert 9 (insert 6 [])))
+  = 1
 
 -- 9.1.2
-
-applicative=n^2, normal=lazy=n
+In a strict language this has running time O(n^2) with n the number of elements
+in the list, as insertionSort takes O(n^2). In a lazy language we have a running
+time of O(n) (in theory at least), as we don't bother sorting the tail of the
+list we build, we just keep the least element at the front.

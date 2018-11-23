@@ -6,6 +6,9 @@ import qualified Data.Map as M
 import Data.List
 import Debug.Trace
 
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 --Costs and dimensions.
 
 type Cost  =  Integer
