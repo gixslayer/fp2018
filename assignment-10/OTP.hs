@@ -4,6 +4,9 @@ import System.Random
 import System.Environment
 import Data.Char
 
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 nextRand :: IO Int
 nextRand = getStdRandom random
 

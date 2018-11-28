@@ -3,6 +3,9 @@ where
 import System.Environment
 import Text.Printf
 
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 -- (newlines, words, bytes)
 type Count = (Int, Int, Int)
 

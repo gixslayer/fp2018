@@ -3,6 +3,9 @@ where
 import Data.IORef
 import Control.Monad
 
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 type ListRef elem  =  IORef (List elem)
 
 data List elem  =  Nil | Cons elem (ListRef elem)

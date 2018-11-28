@@ -5,6 +5,9 @@ import Control.Monad
 import Data.List
 import Text.Read
 
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 type CodeWord = [Code]
 data Code = White | Silver | Green | Red | Orange | Pink | Yellow | Blue
     deriving(Show, Eq, Ord, Enum, Bounded, Read)
