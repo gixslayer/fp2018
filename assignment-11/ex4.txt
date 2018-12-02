@@ -1,0 +1,16 @@
+-- 11.4.1
+
+fmap id m = pure id <*> m (assumption)
+          = m             (2a)
+          = id m          (definition of id)
+
+fmap (f . g) m = pure (f . g) <*> m                     (assumption)
+               = pure ((f.) g) <*> m                    (rewrite)
+               = pure (f.) <*> pure g <*> m             (2c)
+               = pure ((.) f) <*> pure g <*> m          (rewrite)
+               = pure (.) <*> pure f <*> pure g <*> m   (2c)
+               = pure f <*> (pure g <*> m)              (2b)
+               = fmap f (fmap g m)                      (assumption)
+               = (fmap f . fmap g) m                    (rewrite)
+
+-- 11.4.2
