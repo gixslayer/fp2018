@@ -2,6 +2,9 @@ module Evaluator
 where
 import Data.Maybe
 
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 infixl 6 :+:
 infixl 7 :*:
 infixr 1 :?:

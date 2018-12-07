@@ -1,6 +1,9 @@
 module Generate
 where
 
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
+
 bools  ::  [Bool]
 bools  =  pure False ++ pure True
 
@@ -32,13 +35,33 @@ lists :: [a] -> Int -> [[a]]
 lists xs 0 = pure []
 lists xs n = pure (:) <*> xs <*> lists xs (n-1)
 
--- TODO: This feels wrong, but idk what they actually want
+-- The following also works
+--lists = flip replicateM
+-- as lists expands to:
+--lists elems count = foldr (\xs yss -> [x : ys | x <- xs, ys <- yss]) [[]] (replicate count elems)
+{-
+  For each list xs in the arguments for the cartesian product:
+    For each elem x of list xs:
+      For each list ys in the accumulator list yss:
+        Append elem x to list ys
+
+    So basically: concatenate each elem to all lists of the accumulator,
+      and the resulting list becomes the new accumulator
+-}
+
+-- I believe something like this is the idea, but I'm not quite sure.
 trees :: [a] -> Int -> [Tree a]
 trees xs 0 = pure Empty
 trees xs 1 = pure Node <*> pure Empty <*> xs <*> pure Empty
-trees xs n = (pure Node <*> pure Empty <*> xs <*> trees xs (n-1)) ++ (pure Node <*> trees xs (n-1) <*> xs <*> pure Empty)
+trees xs n = (pure Node <*> pure Empty <*> xs <*> trees xs (n-1))
+          ++ (pure Node <*> trees xs (n-1) <*> xs <*> trees xs (n-1))
+          ++ (pure Node <*> trees xs (n-1) <*> xs <*> pure Empty)
 
---lists bools 1
---lists bools 2
---trees (lists bools 2) 1
---trees (lists bools 2) 2
+-- We also had this version
+trees' _ 0 = pure Empty
+trees' combs 1 = flip (Node Empty) Empty <$> combs
+trees' combs depth = --TODO order?
+  (Node Empty <$> combs <*> subTrees) ++
+  (Node <$> subTrees <*> combs <*> subTrees) ++
+  (Node <$> subTrees <*> combs <*> pure Empty)
+  where subTrees = trees' combs (depth-1)
