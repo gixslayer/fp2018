@@ -58,9 +58,10 @@ trees xs n = (pure Node <*> pure Empty <*> xs <*> trees xs (n-1))
           ++ (pure Node <*> trees xs (n-1) <*> xs <*> pure Empty)
 
 -- We also had this version
+trees' :: [comb] -> Int -> [Tree comb]
 trees' _ 0 = pure Empty
 trees' combs 1 = flip (Node Empty) Empty <$> combs
-trees' combs depth = --TODO order?
+trees' combs depth =
   (Node Empty <$> combs <*> subTrees) ++
   (Node <$> subTrees <*> combs <*> subTrees) ++
   (Node <$> subTrees <*> combs <*> pure Empty)
