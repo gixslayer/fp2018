@@ -1,13 +1,12 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE DeriveFunctor #-}
 
 module Printf
 where
+
+-- Steven Wallis de Vries - s1011387
+-- Ciske Harsema - s1010048
 
 data D  =  D  deriving (Show)
 data F  =  F  deriving (Show)
@@ -25,15 +24,12 @@ printf dir = format dir id ""
 class Format dir where
   format :: dir -> (String -> a) -> String -> Arg dir a
 
-newtype (f :.: g) x = TC { fromTC :: f (g x) }
-  deriving (Functor)
-
 -- 12.4
 type instance Arg D res = Int -> res
 type instance Arg F res = Float -> res
 type instance Arg S res = String -> res
 type instance Arg String res = res
-type instance Arg (a, b) res = Arg a res -> Arg b res -> res -- probably wrong
+type instance Arg (dir1, dir2) res = Arg dir1 (Arg dir2 res)
 
 instance Format D where
   format D cont out = \i -> cont (out ++ show i)
@@ -42,16 +38,13 @@ instance Format F where
   format F cont out = \f -> cont (out ++ show f)
 
 instance Format S where
-  format S cont out = \s -> cont (out ++ show s)
+  format S cont out = \s -> cont (out ++ s)
 
 instance Format String where
   format s cont out = cont (out ++ s)
 
 instance (Format dir1,Format dir2) => Format (dir1, dir2) where
-  format (d1, d2) cont out = undefined
-
-combine :: (Functor f, Functor g) => f String -> g String -> f ( g String )
-combine fs gs = fmap (\s -> fmap (\t -> s ++ t) gs) fs
+  format (d1, d2) = format d1 . format d2
 
 --printf D 51
 --printf ("I am " & D & " years old.") 51
